@@ -1402,6 +1402,24 @@ Please note that:
 
 The usage of other configurations follows the same approach as the official usage of Tailwind CSS. Please refer to [tailwindcss - Configuration](https://tailwindcss.com/docs/configuration) for more details.
 
+## swc
+
+swc-related configuration.
+
+### swc.force
+
+Force transpiling JS/TS files with swc.
+
+- **Type**: `boolean`
+- **Default**: `false`
+
+### swc.swcOptions
+
+Used to modify the swc configuration.
+
+- **Type**: `Function`
+- **Default**: `c => c`
+
 ## target
 
 `target` is used to set the target environment for the generated JavaScript code. It enables Modern.js Module to transform JavaScript syntax that is not recognized by the target environment into older versions of JavaScript syntax that are compatible with these environments.

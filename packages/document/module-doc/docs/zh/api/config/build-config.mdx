@@ -1400,6 +1400,24 @@ const tailwind = {
 
 其他配置的使用方式与 Tailwind CSS 官方用法一致，请参考 [tailwindcss - Configuration](https://tailwindcss.com/docs/configuration)。
 
+## swc
+
+swc 相关的配置。
+
+### swc.force
+
+强制使用 swc 转译 JS/TS 文件。
+
+- 类型：`boolean`
+- 默认值：`false`
+
+### swc.swcOptions
+
+用于修改底层的 swc 配置。
+
+- 类型：`Function`
+- 默认值：`c => c`
+
 ## target
 
 `target` 用于为生成的 JavaScript 代码设置目标环境。它让 Modern.js Module 将目标环境无法识别的 JavaScript 语法转换为在这些环境中可用的低版本 JavaScript 语法。
