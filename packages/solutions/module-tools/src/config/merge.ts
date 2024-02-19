@@ -166,6 +166,7 @@ export const mergeDefaultBaseConfig = async (
     sourceType: pConfig.sourceType ?? defaultConfig.sourceType,
     disableSwcTransform:
       pConfig.disableSwcTransform ?? defaultConfig.disableSwcTransform,
+    swc: pConfig.swc ?? defaultConfig.swc,
   };
 };
 

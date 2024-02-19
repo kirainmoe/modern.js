@@ -68,6 +68,10 @@ export const getDefaultBuildConfig = () => {
     tsconfig: 'tsconfig.json',
     umdGlobals: {},
     umdModuleName: name => name,
+    swc: {
+      force: false,
+      swcOptions: c => c,
+    },
   });
 };
 
