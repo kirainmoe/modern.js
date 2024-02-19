@@ -2,6 +2,7 @@ import type { BuildOptions } from 'esbuild';
 import type { CreateFilter } from '@rollup/pluginutils';
 import type { MinifyOptions as TerserMinifyOptions } from 'terser';
 import type { TestConfig } from '@modern-js/types';
+import type { TransformConfig } from '@modern-js/swc-plugins';
 import type { Config } from '../../../compiled/@svgr/core';
 import { internalPreset, presetList } from '../../constants/preset';
 import { ICompiler } from '../esbuild';
@@ -138,6 +139,11 @@ export type Resolve = {
   jsExtensions?: string[];
 };
 
+export type SwcOptions = {
+  force?: boolean;
+  swcOptions?: (options: TransformConfig) => TransformConfig;
+};
+
 export type BaseBuildConfig = Omit<
   Required<PartialBaseBuildConfig>,
   'dts' | 'style' | 'alias' | 'sideEffects' | 'asset' | 'resolve'
@@ -201,6 +207,7 @@ export type PartialBaseBuildConfig = {
    * @deprecated
    */
   sourceType?: 'commonjs' | 'module';
+  swc?: SwcOptions;
 };
 
 export type BuildConfig = BaseBuildConfig | BaseBuildConfig[];

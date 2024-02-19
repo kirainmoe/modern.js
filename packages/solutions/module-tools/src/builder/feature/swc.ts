@@ -61,7 +61,7 @@ export const swcTransform = (userTsconfig: ITsconfig) => ({
       useDefineForClassFields = true;
     }
 
-    const { transformImport, transformLodash, externalHelpers } =
+    const { transformImport, transformLodash, externalHelpers, swc } =
       compiler.config;
 
     compiler.hooks.transform.tapPromise(
@@ -78,7 +78,7 @@ export const swcTransform = (userTsconfig: ITsconfig) => ({
         if (isJsExt(path) || isJsLoader(source.loader)) {
           const { target, jsx } = compiler.config;
 
-          const swcCompilerOptions: TransformConfig = {
+          const defaultSwcCompilerOptions: TransformConfig = {
             sourceMaps: Boolean(compiler.config.sourceMap),
             inputSourceMap: false,
             swcrc: false,
@@ -118,6 +118,11 @@ export const swcTransform = (userTsconfig: ITsconfig) => ({
             },
           };
 
+          const swcCompilerOptions =
+            typeof swc?.swcOptions === 'function'
+              ? swc?.swcOptions(defaultSwcCompilerOptions)
+              : defaultSwcCompilerOptions;
+
           const swcCompiler = new Compiler(swcCompilerOptions);
           const result = await swcCompiler.transform(
             basename(path),
@@ -145,12 +150,13 @@ export const swcRenderChunk = {
       { name: 'swc:renderChunk' },
       async chunk => {
         if (chunk.fileName.endsWith('.js') && chunk.type === 'chunk') {
-          const { umdModuleName, format } = compiler.config;
+          const { umdModuleName, format, swc } = compiler.config;
           const name =
             typeof umdModuleName === 'function'
               ? umdModuleName(chunk.fileName)
               : umdModuleName;
-          const swcCompiler = new Compiler({
+
+          const defaultSwcCompilerOptions: TransformConfig = {
             sourceMaps: Boolean(compiler.config.sourceMap),
             inputSourceMap: false,
             swcrc: false,
@@ -171,7 +177,14 @@ export const swcRenderChunk = {
             // so we need to set `isModule` to `true`.
             // eg: when `autoExternal` is false, then chunk.contents will be recognized as [Script]
             isModule: format === 'umd' ? true : 'unknown',
-          });
+          };
+
+          const swcCompilerOptions =
+            typeof swc?.swcOptions === 'function'
+              ? swc?.swcOptions(defaultSwcCompilerOptions)
+              : defaultSwcCompilerOptions;
+
+          const swcCompiler = new Compiler(swcCompilerOptions);
           const result = await swcCompiler.transform(
             name,
             chunk.contents.toString(),

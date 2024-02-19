@@ -29,14 +29,21 @@ export async function getInternalList(context: Context): Promise<HookList> {
   const emitDecoratorMetadata =
     userTsconfig?.compilerOptions?.emitDecoratorMetadata ?? false;
 
-  const { transformImport, transformLodash, externalHelpers, format, target } =
-    context.config;
+  const {
+    transformImport,
+    transformLodash,
+    externalHelpers,
+    format,
+    target,
+    swc,
+  } = context.config;
 
   const enbaleSwcTransform =
     transformImport.length > 0 ||
     transformLodash ||
     externalHelpers ||
-    emitDecoratorMetadata;
+    emitDecoratorMetadata ||
+    swc?.force;
   const enableSwcRenderChunk = enbaleSwcTransform
     ? format === 'umd'
     : format === 'umd' || target === 'es5';
